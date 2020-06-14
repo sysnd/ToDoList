@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
+using ToDoList.Server.Repositories.Task;
+using ToDoList.Server.Repositories.User;
+using ToDoList.Server.Services.Auth;
+using ToDoList.Server.Services.Task;
+using ToDoList.Server.Services.User;
 
 namespace ToDoList.Server
 {
@@ -22,9 +24,14 @@ namespace ToDoList.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<ITaskService, TaskService>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<ITaskRepository, TaskRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

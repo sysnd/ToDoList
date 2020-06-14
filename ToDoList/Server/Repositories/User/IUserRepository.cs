@@ -1,6 +1,8 @@
-﻿namespace ToDoList.Server.Repositories.User
+﻿using UserModel = ToDoList.Shared.Models.User;
+
+namespace ToDoList.Server.Repositories.User
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<UserModel>
     {
         
     }

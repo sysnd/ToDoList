@@ -1,7 +1,7 @@
 ﻿using ToDoList.Server.Data;
 using TaskModel = ToDoList.Shared.Models.Task;
 
-namespace ToDoList.Server.Repositories.Tasks
+namespace ToDoList.Server.Repositories.Task
 {
     public class TaskRepository : BaseRepository<TaskModel>, ITaskRepository
     {

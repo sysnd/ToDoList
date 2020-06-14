@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDoList.Server.Data;
 using ToDoList.Server.Repositories;
-using ToDoList.Server.Repositories.Tasks;
+using ToDoList.Server.Repositories.Task;
 using ToDoList.Server.Repositories.User;
 using ToDoList.Server.Services.Auth;
 using ToDoList.Server.Services.Task;

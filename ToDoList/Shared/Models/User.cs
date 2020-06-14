@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ToDoList.Shared.Models
 {
@@ -15,5 +16,7 @@ namespace ToDoList.Shared.Models
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public List<Task> Tasks { get; set; }
     }
 }

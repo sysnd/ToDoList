@@ -14,5 +14,7 @@ namespace ToDoList.Shared.Models
         public int Effort { get; set; }
 
         public TaskStatus Status { get; set; }
+
+        public User User { get; set; }
     }
 }

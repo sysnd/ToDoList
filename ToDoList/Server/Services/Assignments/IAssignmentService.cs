@@ -11,10 +11,10 @@ namespace ToDoList.Server.Services.Assignments
 
         Task<Assignment> GetById(Guid id);
 
-        Task Create(Assignment assignment);
+        Task<bool> Create(Assignment assignment);
 
-        Task Update(Assignment assignment);
+        Task<bool> Update(Assignment assignment);
 
-        Task Delete(Guid id);
+        Task<bool> Delete(Guid id);
     }
 }

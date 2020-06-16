@@ -15,14 +15,32 @@ namespace ToDoList.Server.Services.Assignments
             _taskRepository = taskRepository;
         }
 
-        public async Task Create(Assignment assignment)
+        public async Task<bool> Create(Assignment assignment)
         {
-            await _taskRepository.Create(assignment);
+            try
+            {
+                await _taskRepository.Create(assignment);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
-            await _taskRepository.Delete(id);
+            try
+            {
+                await _taskRepository.Delete(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public IQueryable<Assignment> GetAll()
@@ -35,9 +53,18 @@ namespace ToDoList.Server.Services.Assignments
             return await _taskRepository.GetById(id);
         }
 
-        public async Task Update(Assignment assignment)
+        public async Task<bool> Update(Assignment assignment)
         {
-            await _taskRepository.Update(assignment);
+            try
+            {
+                await _taskRepository.Update(assignment);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

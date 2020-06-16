@@ -11,10 +11,10 @@ namespace ToDoList.Server.Services.Users
 
         Task<User> GetById(Guid id);
 
-        Task Create(User user);
+        Task<bool> Create(User user);
 
-        Task Update(User user);
+        Task<bool> Update(User user);
 
-        Task Delete(Guid id);
+        Task<bool> Delete(Guid id);
     }
 }

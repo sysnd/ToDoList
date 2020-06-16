@@ -15,14 +15,32 @@ namespace ToDoList.Server.Services.Users
             _userRepository = userRepository;
         }
 
-        public async Task Create(User user)
+        public async Task<bool> Create(User user)
         {
-            await _userRepository.Create(user);
+            try
+            {
+                await _userRepository.Create(user);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public async Task Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
-            await _userRepository.Delete(id);
+            try
+            {
+                await _userRepository.Delete(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public IQueryable<User> GetAll()
@@ -35,9 +53,18 @@ namespace ToDoList.Server.Services.Users
             return await _userRepository.GetById(id);
         }
 
-        public async Task Update(User user)
+        public async Task<bool> Update(User user)
         {
-            await _userRepository.Update(user);
+            try
+            {
+                await _userRepository.Update(user);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

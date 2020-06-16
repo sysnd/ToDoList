@@ -12,11 +12,13 @@ namespace ToDoList.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    Username = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Salt = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,7 +26,7 @@ namespace ToDoList.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Assignments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -36,9 +38,9 @@ namespace ToDoList.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Assignments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_UserId",
+                        name: "FK_Assignments_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -46,15 +48,15 @@ namespace ToDoList.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_UserId",
-                table: "Tasks",
+                name: "IX_Assignments_UserId",
+                table: "Assignments",
                 column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "Assignments");
 
             migrationBuilder.DropTable(
                 name: "Users");

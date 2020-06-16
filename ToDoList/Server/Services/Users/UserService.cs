@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ToDoList.Server.Repositories.Users;
 using ToDoList.Shared.Models;
@@ -19,7 +20,6 @@ namespace ToDoList.Server.Services.Users
         {
             try
             {
-                user.IsAdmin = false;
                 await _userRepository.Create(user);
             }
             catch (Exception)

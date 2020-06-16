@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using ToDoList.Server.Common.Responses;
 using ToDoList.Server.Repositories.Users;
 using ToDoList.Shared.Models;
@@ -16,6 +18,12 @@ namespace ToDoList.Server.Services.Auth
         public async Task<MessageResponse> SignIn(string username, string password)
         {
             var user = await _userRepository.GetByUsername(username);
+
+            var passByteArr = Convert.FromBase64String(password);
+            var saltByteArr = Convert.FromBase64String(user.Salt);
+            var saltedHash = new Rfc2898DeriveBytes(passByteArr, saltByteArr, 1000);
+            var hashedPass = Convert.ToBase64String(saltedHash.GetBytes(20));
+
             var response = new MessageResponse();
             if (user == null)
             {
@@ -23,7 +31,7 @@ namespace ToDoList.Server.Services.Auth
                 response.Success = false;
                 return response;
             }
-            else if (user.Password != password)
+            else if (user.Password != hashedPass)
             {
                 response.Message = "Your password is incorrect.";
                 response.Success = false;
@@ -50,6 +58,16 @@ namespace ToDoList.Server.Services.Auth
             }
             else
             {
+                byte[] salt = Guid.NewGuid().ToByteArray();
+                var saltedHash = new Rfc2898DeriveBytes(user.Password, salt, 1000);
+                var pass = saltedHash.GetBytes(20);
+                var passString = Convert.ToBase64String(pass);
+                var saltString = Convert.ToBase64String(saltedHash.Salt);
+
+                user.Salt = saltString;
+                user.Password = passString;
+                user.IsAdmin = false;
+
                 await _userRepository.Create(user);
                 response.Message = "Successfully signed up.";
                 response.Success = true;

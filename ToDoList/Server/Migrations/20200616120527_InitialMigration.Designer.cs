@@ -9,8 +9,8 @@ using ToDoList.Server.Data;
 namespace ToDoList.Server.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    [Migration("20200616105421_RenamedTaskAndUpdatedUser")]
-    partial class RenamedTaskAndUpdatedUser
+    [Migration("20200616120527_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,9 @@ namespace ToDoList.Server.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Salt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")

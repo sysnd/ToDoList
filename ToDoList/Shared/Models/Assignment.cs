@@ -2,7 +2,7 @@
 
 namespace ToDoList.Shared.Models
 {
-    public class Task : BaseModel
+    public class Assignment : BaseModel
     {
         public string Title { get; set; }
 

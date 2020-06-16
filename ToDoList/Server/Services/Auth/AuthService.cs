@@ -1,7 +1,7 @@
-﻿using ToDoList.Server.Common.Responses;
-using ToDoList.Server.Repositories.User;
-using Threading = System.Threading.Tasks;
-using UserModel = ToDoList.Shared.Models.User;
+﻿using System.Threading.Tasks;
+using ToDoList.Server.Common.Responses;
+using ToDoList.Server.Repositories.Users;
+using ToDoList.Shared.Models;
 
 namespace ToDoList.Server.Services.Auth
 {
@@ -13,7 +13,7 @@ namespace ToDoList.Server.Services.Auth
             _userRepository = userRepository;
         }
 
-        public async Threading.Task<MessageResponse> SignIn(string username, string password)
+        public async Task<MessageResponse> SignIn(string username, string password)
         {
             var user = await _userRepository.GetByUsername(username);
             var response = new MessageResponse();
@@ -37,7 +37,7 @@ namespace ToDoList.Server.Services.Auth
             }
         }
 
-        public async Threading.Task<MessageResponse> SignUp(UserModel user)
+        public async Task<MessageResponse> SignUp(User user)
         {
             var response = new MessageResponse();
             var existingUser = await _userRepository.GetByUsername(user.Username);

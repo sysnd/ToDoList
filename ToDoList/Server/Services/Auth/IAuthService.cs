@@ -1,13 +1,13 @@
-﻿using ToDoList.Server.Common.Responses;
-using Threading = System.Threading.Tasks;
-using UserModel = ToDoList.Shared.Models.User;
+﻿using System.Threading.Tasks;
+using ToDoList.Server.Common.Responses;
+using ToDoList.Shared.Models;
 
 namespace ToDoList.Server.Services.Auth
 {
     public interface IAuthService
     {
-        Threading.Task<MessageResponse> SignIn(string username, string password);
+        Task<MessageResponse> SignIn(string username, string password);
 
-        Threading.Task<MessageResponse> SignUp(UserModel user);
+        Task<MessageResponse> SignUp(User user);
     }
 }

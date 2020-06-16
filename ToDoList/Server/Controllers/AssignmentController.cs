@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ToDoList.Server.Controllers.Auth
+namespace ToDoList.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public class AssignmentController : ControllerBase
     {
     }
 }

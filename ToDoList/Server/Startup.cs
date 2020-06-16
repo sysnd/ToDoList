@@ -6,11 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDoList.Server.Data;
 using ToDoList.Server.Repositories;
-using ToDoList.Server.Repositories.Task;
-using ToDoList.Server.Repositories.User;
+using ToDoList.Server.Repositories.Assignments;
+using ToDoList.Server.Repositories.Users;
+using ToDoList.Server.Services.Assignments;
 using ToDoList.Server.Services.Auth;
-using ToDoList.Server.Services.Task;
-using ToDoList.Server.Services.User;
+using ToDoList.Server.Services.Users;
 
 namespace ToDoList.Server
 {
@@ -36,10 +36,10 @@ namespace ToDoList.Server
 
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<ITaskService, TaskService>();
+            services.AddSingleton<IAssignmentService, AssignmentService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IAssignmentRepository, AssignmentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

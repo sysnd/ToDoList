@@ -14,6 +14,6 @@ namespace ToDoList.Shared.Models
 
         public string LastName { get; set; }
 
-        public List<Task> Tasks { get; set; }
+        public List<Assignment> Tasks { get; set; }
     }
 }

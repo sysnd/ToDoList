@@ -1,11 +1,11 @@
 ﻿using ToDoList.Server.Data;
-using UserModel = ToDoList.Shared.Models.User;
-using Threading = System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ToDoList.Shared.Models;
+using System.Threading.Tasks;
 
-namespace ToDoList.Server.Repositories.User
+namespace ToDoList.Server.Repositories.Users
 {
-    public class UserRepository : BaseRepository<UserModel>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         private readonly ToDoListDbContext _dbContext;
         public UserRepository(ToDoListDbContext dbContext) : base(dbContext)
@@ -13,9 +13,9 @@ namespace ToDoList.Server.Repositories.User
             _dbContext = dbContext;
         }
 
-        public async Threading.Task<UserModel> GetByUsername(string username)
+        public async Task<User> GetByUsername(string username)
         {
-            return await _dbContext.Set<UserModel>()
+            return await _dbContext.Set<User>()
                 .FirstOrDefaultAsync(e => e.Username == username);
         }
 

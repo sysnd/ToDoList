@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using ToDoList.Shared.Enums;
 
 namespace ToDoList.Shared.Models
 {
@@ -10,7 +10,7 @@ namespace ToDoList.Shared.Models
 
         public int Effort { get; set; }
 
-        public TaskStatus Status { get; set; }
+        public AssignmentStatus Status { get; set; }
 
         public User User { get; set; }
     }

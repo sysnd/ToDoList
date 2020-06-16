@@ -19,6 +19,7 @@ namespace ToDoList.Server.Services.Users
         {
             try
             {
+                user.IsAdmin = false;
                 await _userRepository.Create(user);
             }
             catch (Exception)

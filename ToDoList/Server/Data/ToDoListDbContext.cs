@@ -11,7 +11,7 @@ namespace ToDoList.Server.Data
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Assignment> Tasks { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

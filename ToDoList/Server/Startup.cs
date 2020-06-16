@@ -34,9 +34,9 @@ namespace ToDoList.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAssignmentService, AssignmentService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAssignmentService, AssignmentService>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAssignmentRepository, AssignmentRepository>();

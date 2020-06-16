@@ -1,0 +1,51 @@
+﻿@using ToDoList.Shared.Models
+@using ToDoList.Shared.Enums
+@inject HttpClient Http
+
+@if (assignments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Effort</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (assignments.Count > 0)
+            {
+                @foreach (var a in assignments)
+                {
+                    <tr>
+                        <td>@a.Title</td>
+                        <td>@a.Description</td>
+                        <td>@a.Effort</td>
+                        <td>@Enum.GetName(typeof(AssignmentStatus), a.Status)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="textAlignCenter">No Records Found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Assignment> assignments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        assignments = await Http.GetFromJsonAsync<List<Assignment>>("Assignment");
+    }
+}

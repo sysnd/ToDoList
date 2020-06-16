@@ -1,0 +1,50 @@
+﻿@using ToDoList.Shared.Models
+
+@inject IModalService ModalService
+@inject HttpClient Http
+
+<EditForm Model="@Assignment" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="titleInput">Title</label>
+        <InputText type="text" class="form-control" id="titleInput" @bind-Value="@Assignment.Title" />
+        <ValidationMessage For="@(() => Assignment.Title)" />
+    </div>
+    <div class="form-group">
+        <label for="descrInput">Description</label>
+        <InputText type="text" class="form-control" id="descrInput" @bind-Value="@Assignment.Description" />
+        <ValidationMessage For="@(() => Assignment.Description)" />
+    </div>
+    <div class="form-group">
+        <label for="effortInput">Effort</label>
+        <InputNumber class="form-control" id="effortInput" @bind-Value="@Assignment.Effort" />
+        <ValidationMessage For="@(() => Assignment.Effort)" />
+    </div>
+    <div class="form-group">
+        <label for="statusSelect">Status</label>
+        <InputSelect type="text" class="form-control" id="statusSelect" @bind-Value="@Assignment.Status">
+            <option value="0">New</option>
+            <option value="1">Active</option>
+            <option value="2">Done</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => Assignment.Status)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public Assignment Assignment { get; set; }
+
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; }
+
+    private async Task OnValidSubmit()
+    {
+        await Http.PostAsJsonAsync<Assignment>("assignment", Assignment);
+        BlazoredModal.Close(ModalResult.Ok<Assignment>(Assignment));
+    }
+}

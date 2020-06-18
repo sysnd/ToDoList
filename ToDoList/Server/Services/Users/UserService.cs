@@ -58,7 +58,11 @@ namespace ToDoList.Server.Services.Users
         {
             try
             {
-                await _userRepository.Update(user);
+                var currentUser = await _userRepository.GetById(user.Id);
+                if (user.Username != currentUser.Username)
+                {
+                    await _userRepository.Update(user);
+                }
             }
             catch (Exception)
             {

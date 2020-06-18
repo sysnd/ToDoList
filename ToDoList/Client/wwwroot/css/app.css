@@ -160,6 +160,10 @@ app {
     text-align: center;
 }
 
+.displayNone {
+    display: none;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

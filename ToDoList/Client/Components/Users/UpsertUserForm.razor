@@ -9,7 +9,7 @@
     <ValidationSummary />
     <div class="form-group">
         <label for="usernameInput">Username</label>
-        <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" />
+        <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" disabled="disabled" />
         <ValidationMessage For="@(() => User.Username)" />
     </div>
     <div class="form-group">
@@ -17,7 +17,7 @@
         <InputText type="email" class="form-control" id="emailInput" @bind-Value="@User.Email" />
         <ValidationMessage For="@(() => User.Email)" />
     </div>
-    <div class="form-group">
+    <div class="form-group @passwordClass">
         <label for="passwordInput">Password</label>
         <InputText type="password" class="form-control" id="passwordInput" @bind-Value="@User.Password" />
         <ValidationMessage For="@(() => User.Password)" />
@@ -44,9 +44,31 @@
     [CascadingParameter]
     BlazoredModalInstance BlazoredModal { get; set; }
 
+
+    private string passwordClass;
+    private bool isDisabled;
+
+
+    protected override void OnInitialized()
+    {
+        Console.WriteLine(User.Id);
+        if (User.Id != Guid.Empty)
+        {
+            passwordClass = "displayNone";
+            isDisabled = true;
+        }
+    }
+
     private async Task OnValidSubmit()
     {
-        await Http.PostAsJsonAsync<User>("auth/signup", User);
+        if (User.Id == Guid.Empty)
+        {
+            await Http.PostAsJsonAsync<User>("auth/signup", User);
+        }
+        else
+        {
+            await Http.PutAsJsonAsync<User>("user", User);
+        }
         BlazoredModal.Close(ModalResult.Ok<User>(User));
     }
 }

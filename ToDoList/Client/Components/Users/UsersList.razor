@@ -1,6 +1,7 @@
 ﻿@using ToDoList.Shared.Models
 
 @inject HttpClient Http
+@inject IModalService Modal
 
 @if (users == null)
 {
@@ -31,7 +32,7 @@ else
                         <td>@u.FirstName </td>
                         <td>@u.LastName</td>
                         <td>@u.IsAdmin</td>
-                        <td><button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => EditUser(u))"><i class="fas fa-edit"></i></button></td>
                         <td><button type="button" class="btn btn-primary"><i class="fas fa-trash"></i></button></td>
                     </tr>
                 }
@@ -53,5 +54,12 @@ else
     protected override async Task OnInitializedAsync()
     {
         users = await Http.GetFromJsonAsync<List<User>>("user");
+    }
+
+    private void EditUser(User user)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(UpsertUserForm.User), user);
+        Modal.Show<UpsertUserForm>("Edit User", parameters);
     }
 }

@@ -14,11 +14,7 @@
     private void OpenModal()
     {
         var parameters = new ModalParameters();
-        var options = new ModalOptions()
-        {
-            Position = ModalPosition.Center
-        };
         parameters.Add(nameof(UpsertUserForm.User), user);
-        Modal.Show<UpsertUserForm>("Add User", parameters, options);
+        Modal.Show<UpsertUserForm>("Add User", parameters);
     }
 }

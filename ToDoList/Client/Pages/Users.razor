@@ -15,6 +15,10 @@
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(UpsertUserForm.User), user);
-        Modal.Show<UpsertUserForm>("Add User", parameters);
+        var modalRef = Modal.Show<UpsertUserForm>("Add User", parameters);
+        if (modalRef.Result.IsCompletedSuccessfully)
+        {
+            this.StateHasChanged();
+        }
     }
 }

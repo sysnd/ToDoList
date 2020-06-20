@@ -2,7 +2,6 @@
 @using ToDoList.Shared.Utils
 @using ToDoList.Shared.Models.Responses
 
-@inject IModalService ModalService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
@@ -12,7 +11,7 @@
     <ValidationSummary />
     <div class="form-group">
         <label for="usernameInput">Username</label>
-        <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" disabled=@isDisabled />
+        <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" />
         <ValidationMessage For="@(() => User.Username)" />
     </div>
     <div class="form-group">
@@ -20,7 +19,7 @@
         <InputText type="email" class="form-control" id="emailInput" @bind-Value="@User.Email" />
         <ValidationMessage For="@(() => User.Email)" />
     </div>
-    <div class="form-group @passwordClass">
+    <div class="form-group">
         <label for="passwordInput">Password</label>
         <InputText type="password" class="form-control" id="passwordInput" @bind-Value="@User.Password" />
         <ValidationMessage For="@(() => User.Password)" />
@@ -35,8 +34,7 @@
         <InputText type="text" class="form-control" id="lastNameInput" @bind-Value="@User.LastName" />
         <ValidationMessage For="@(() => User.LastName)" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
+    <button type="submit" class="btn btn-primary">Sign up</button>
 
 </EditForm>
 
@@ -44,49 +42,18 @@
     [Parameter]
     public User User { get; set; }
 
-    [CascadingParameter]
-    BlazoredModalInstance BlazoredModal { get; set; }
-
-
-    private string passwordClass;
-    private bool isDisabled;
-
-    protected override void OnInitialized()
-    {
-        if (User.Id != Guid.Empty)
-        {
-            passwordClass = "displayNone";
-            isDisabled = true;
-        }
-    }
-
     private async Task OnValidSubmit()
     {
-        if (User.Id == Guid.Empty)
+
+        var result = await Http.PostAsJsonAsync<User>("auth/signup", User);
+        var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
+        if (responseObj.IsSuccessful)
         {
-            var result = await Http.PostAsJsonAsync<User>("auth/signup", User);
-            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
-            if (responseObj.IsSuccessful)
-            {
-                BlazoredModal.Close(ModalResult.Ok<User>(User));
-            }
-            else
-            {
-                ToastService.ShowError(responseObj.Message);
-            }
+            NavigationManager.NavigateTo("/login");
         }
         else
         {
-            var result = await Http.PutAsJsonAsync<User>("user", User);
-            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
-            if (responseObj.IsSuccessful)
-            {
-                BlazoredModal.Close(ModalResult.Ok<User>(User));
-            }
-            else
-            {
-                ToastService.ShowError(responseObj.Message);
-            }
+            ToastService.ShowError(responseObj.Message);
         }
     }
 }

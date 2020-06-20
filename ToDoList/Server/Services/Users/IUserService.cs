@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Shared.Models;
+using ToDoList.Shared.Models.Responses;
 
 namespace ToDoList.Server.Services.Users
 {
@@ -13,7 +14,7 @@ namespace ToDoList.Server.Services.Users
 
         Task<bool> Create(User user);
 
-        Task<bool> Update(User user);
+        Task<GenericResponseMessage> Update(User user);
 
         Task<bool> Delete(Guid id);
     }

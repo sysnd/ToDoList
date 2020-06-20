@@ -1,5 +1,10 @@
-﻿<h3>Login</h3>
+﻿@page "/login"
+
+@using ToDoList.Client.Components.Auth
+@using ToDoList.Shared.Models.Requests
+
+<LoginForm User=user/>
 
 @code {
-
+    UserLoginRequest user = new UserLoginRequest();
 }

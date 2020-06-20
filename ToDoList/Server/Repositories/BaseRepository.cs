@@ -16,13 +16,13 @@ namespace ToDoList.Server.Repositories
             _dbContext = dbContext;
         }
 
-        public async System.Threading.Tasks.Task Create(T entity)
+        public async Task Create(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async System.Threading.Tasks.Task Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var entity = await GetById(id);
             _dbContext.Set<T>().Remove(entity);
@@ -31,16 +31,17 @@ namespace ToDoList.Server.Repositories
 
         public IQueryable<T> GetAll()
         {
-            return _dbContext.Set<T>();
+            return _dbContext.Set<T>().AsNoTracking();
         }
 
         public async Task<T> GetById(Guid id)
         {
             return await _dbContext.Set<T>()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async System.Threading.Tasks.Task Update(T entity)
+        public async Task Update(T entity)
         {
             _dbContext.Set<T>().Update(entity);
             await _dbContext.SaveChangesAsync();

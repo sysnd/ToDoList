@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using ToDoList.Server.Services.Auth;
 using ToDoList.Shared.Models;
+using ToDoList.Shared.Models.Requests;
 
 namespace ToDoList.Server.Controllers
 {
@@ -23,7 +24,7 @@ namespace ToDoList.Server.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] User user)
+        public async Task<IActionResult> SignIn([FromBody] UserLoginRequest user)
         {
             try
             {

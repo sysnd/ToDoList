@@ -16,6 +16,7 @@ namespace ToDoList.Server.Repositories.Users
         public async Task<User> GetByUsername(string username)
         {
             return await _dbContext.Set<User>()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Username == username);
         }
 

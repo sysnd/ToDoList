@@ -1,5 +1,10 @@
-﻿<h3>Register</h3>
+﻿@page "/register"
+
+@using ToDoList.Shared.Models
+@using ToDoList.Client.Components.Auth
+
+<RegisterForm User=user/>
 
 @code {
-
+    User user = new User();
 }

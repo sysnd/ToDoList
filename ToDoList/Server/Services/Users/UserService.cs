@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ToDoList.Server.Repositories.Users;
 using ToDoList.Shared.Models;
+using ToDoList.Shared.Models.Responses;
 
 namespace ToDoList.Server.Services.Users
 {
@@ -54,22 +56,31 @@ namespace ToDoList.Server.Services.Users
             return await _userRepository.GetById(id);
         }
 
-        public async Task<bool> Update(User user)
+        public async Task<GenericResponseMessage> Update(User user)
         {
+            var response = new GenericResponseMessage();
             try
             {
                 var currentUser = await _userRepository.GetById(user.Id);
-                if (user.Username != currentUser.Username)
+                if (user.Username == currentUser.Username)
                 {
                     await _userRepository.Update(user);
+                    response.IsSuccessful = true;
+                    response.Message = "Successfully updated the user.";
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                    response.Message = "You can not update the username field.";
                 }
             }
             catch (Exception)
             {
-                return false;
+                response.IsSuccessful = false;
+                response.Message = $"Could not update user.";
             }
 
-            return true;
+            return response;
         }
     }
 }

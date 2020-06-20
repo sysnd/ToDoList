@@ -3,68 +3,83 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Server.Repositories.Assignments;
 using ToDoList.Shared.Models;
+using ToDoList.Shared.Models.Responses;
 
 namespace ToDoList.Server.Services.Assignments
 {
     public class AssignmentService : IAssignmentService
     {
-        private readonly IAssignmentRepository _taskRepository;
+        private readonly IAssignmentRepository _assignmentRepository;
 
-        public AssignmentService(IAssignmentRepository taskRepository)
+        public AssignmentService(IAssignmentRepository assignmentRepository)
         {
-            _taskRepository = taskRepository;
+            _assignmentRepository = assignmentRepository;
         }
 
-        public async Task<bool> Create(Assignment assignment)
+        public async Task<GenericResponseMessage> Create(Assignment assignment)
         {
+            var response = new GenericResponseMessage();
+
             try
             {
-                await _taskRepository.Create(assignment);
+                await _assignmentRepository.Create(assignment);
+                response.IsSuccessful = true;
+                response.Message = "Successfully created assignment.";
             }
             catch (Exception)
             {
-                return false;
+                response.IsSuccessful = false;
+                response.Message = $"Could not delete assignment.";
             }
 
-            return true;
+            return response;
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<GenericResponseMessage> Delete(Guid id)
         {
+            var response = new GenericResponseMessage();
+
             try
             {
-                await _taskRepository.Delete(id);
+                await _assignmentRepository.Delete(id);
+                response.IsSuccessful = true;
+                response.Message = "Successfully deleted assignment.";
             }
             catch (Exception)
             {
-                return false;
+                response.IsSuccessful = false;
+                response.Message = $"Could not delete assignment.";
             }
 
-            return true;
+            return response;
         }
 
         public IQueryable<Assignment> GetAll()
         {
-            return _taskRepository.GetAll();
+            return _assignmentRepository.GetAll();
         }
 
         public async Task<Assignment> GetById(Guid id)
         {
-            return await _taskRepository.GetById(id);
+            return await _assignmentRepository.GetById(id);
         }
 
-        public async Task<bool> Update(Assignment assignment)
+        public async Task<GenericResponseMessage> Update(Assignment assignment)
         {
+            var response = new GenericResponseMessage();
             try
             {
-                await _taskRepository.Update(assignment);
+                await _assignmentRepository.Update(assignment);
+                response.IsSuccessful = true;
+                response.Message = "Successfully updated assignment.";
             }
             catch (Exception)
             {
-                return false;
+                response.IsSuccessful = false;
+                response.Message = $"Could not update assignment.";
             }
 
-            return true;
+            return response;
         }
     }
 }

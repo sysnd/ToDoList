@@ -1,7 +1,12 @@
 ﻿@using ToDoList.Shared.Models
+@using ToDoList.Client.Services.Assignments
+@using ToDoList.Shared.Utils
+@using ToDoList.Shared.Models.Responses
+@using ToDoList.Shared.Enums
 
+@inject IToastService ToastService
 @inject IModalService ModalService
-@inject HttpClient Http
+@inject IAssignmentService AssignmentService
 
 <EditForm Model="@Assignment" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -23,10 +28,11 @@
     </div>
     <div class="form-group">
         <label for="statusSelect">Status</label>
-        <InputSelect type="text" class="form-control" id="statusSelect" @bind-Value="@Assignment.Status">
-            <option value="0">New</option>
-            <option value="1">Active</option>
-            <option value="2">Done</option>
+        <InputSelect class="form-control" id="statusSelect" @bind-Value="@Assignment.Status">
+            @foreach (var status in Enum.GetValues(typeof(AssignmentStatus)))
+            {
+                <option value="@status">@status</option>
+            }
         </InputSelect>
         <ValidationMessage For="@(() => Assignment.Status)" />
     </div>
@@ -44,7 +50,31 @@
 
     private async Task OnValidSubmit()
     {
-        await Http.PostAsJsonAsync<Assignment>("assignment", Assignment);
-        BlazoredModal.Close(ModalResult.Ok<Assignment>(Assignment));
+        if (Assignment.Id == Guid.Empty)
+        {
+            var result = await AssignmentService.Create(Assignment);
+            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
+            if (responseObj.IsSuccessful)
+            {
+                BlazoredModal.Close(ModalResult.Ok<Assignment>(Assignment));
+            }
+            else
+            {
+                ToastService.ShowError(responseObj.Message);
+            }
+        }
+        else
+        {
+            var result = await AssignmentService.Update(Assignment);
+            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
+            if (responseObj.IsSuccessful)
+            {
+                BlazoredModal.Close(ModalResult.Ok<Assignment>(Assignment));
+            }
+            else
+            {
+                ToastService.ShowError(responseObj.Message);
+            }
+        }
     }
 }

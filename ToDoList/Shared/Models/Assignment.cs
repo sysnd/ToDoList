@@ -10,7 +10,7 @@ namespace ToDoList.Shared.Models
 
         public string Description { get; set; }
 
-        [Range(0,100,ErrorMessage ="The estimated effort should be an integer between 0 and 100")]
+        [Range(0, 100, ErrorMessage = "The estimated effort should be an integer between 0 and 100")]
         public int Effort { get; set; }
 
         public AssignmentStatus Status { get; set; }

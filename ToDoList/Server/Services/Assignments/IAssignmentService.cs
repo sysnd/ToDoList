@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.Shared.Models;
+using ToDoList.Shared.Models.Responses;
 
 namespace ToDoList.Server.Services.Assignments
 {
@@ -11,10 +12,10 @@ namespace ToDoList.Server.Services.Assignments
 
         Task<Assignment> GetById(Guid id);
 
-        Task<bool> Create(Assignment assignment);
+        Task<GenericResponseMessage> Create(Assignment assignment);
 
-        Task<bool> Update(Assignment assignment);
+        Task<GenericResponseMessage> Update(Assignment assignment);
 
-        Task<bool> Delete(Guid id);
+        Task<GenericResponseMessage> Delete(Guid id);
     }
 }

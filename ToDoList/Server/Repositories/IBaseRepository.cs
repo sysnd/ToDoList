@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
-using Threading = System.Threading.Tasks;
-using Models = ToDoList.Shared.Models;
+using System.Threading.Tasks;
+using ToDoList.Shared.Models;
 
 namespace ToDoList.Server.Repositories
 {
-    public interface IBaseRepository<T> where T : Models.BaseModel
+    public interface IBaseRepository<T> where T : BaseModel
     {
         IQueryable<T> GetAll();
 
-        Threading.Task<T> GetById(Guid id);
+        Task<T> GetById(Guid id);
 
-        Threading.Task Create(T entity);
+        Task Create(T entity);
 
-        Threading.Task Update(T entity);
+        Task Update(T entity);
 
-        Threading.Task Delete(Guid id);
+        Task Delete(Guid id);
     }
 }

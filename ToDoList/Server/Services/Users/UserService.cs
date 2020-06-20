@@ -38,7 +38,7 @@ namespace ToDoList.Server.Services.Users
             {
                 await _userRepository.Delete(id);
                 response.IsSuccessful = true;
-                response.Message = "Successfully deleted the user.";
+                response.Message = "Successfully deleted user.";
             }
             catch (Exception)
             {
@@ -69,7 +69,7 @@ namespace ToDoList.Server.Services.Users
                 {
                     await _userRepository.Update(user);
                     response.IsSuccessful = true;
-                    response.Message = "Successfully updated the user.";
+                    response.Message = "Successfully updated user.";
                 }
                 else
                 {

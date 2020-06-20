@@ -1,6 +1,14 @@
 ﻿@using ToDoList.Shared.Models
+@using ToDoList.Client.Components.Common
+@using ToDoList.Shared.Utils
+@using ToDoList.Shared.Models.Responses
 @using ToDoList.Shared.Enums
-@inject HttpClient Http
+@using ToDoList.Client.Services.Assignments
+
+@inject IModalService Modal
+@inject IToastService ToastService
+@inject IAssignmentService AssignmentService
+
 
 @if (assignments == null)
 {
@@ -8,6 +16,7 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="AddAssignment">Add Assignment</button>
     <table class="table">
         <thead>
             <tr>
@@ -24,14 +33,14 @@ else
             {
                 @foreach (var a in assignments)
                 {
-            <tr>
-                <td>@a.Title</td>
-                <td>@a.Description</td>
-                <td>@a.Effort</td>
-                <td>@Enum.GetName(typeof(AssignmentStatus), a.Status)</td>
-                <td><button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></td>
-                <td><button type="button" class="btn btn-primary"><i class="fas fa-trash"></i></button></td>
-            </tr>
+                    <tr>
+                        <td>@a.Title</td>
+                        <td>@a.Description</td>
+                        <td>@a.Effort</td>
+                        <td>@Enum.GetName(typeof(AssignmentStatus), a.Status)</td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => EditAssignment(a))"><i class="fas fa-edit"></i></button></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => DeleteAssignment(a))"><i class="fas fa-trash"></i></button></td>
+                    </tr>
                 }
             }
             else
@@ -50,6 +59,60 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        assignments = await Http.GetFromJsonAsync<List<Assignment>>("Assignment");
+        assignments = await AssignmentService.GetAll();
+    }
+
+    private async Task EditAssignment(Assignment assignment)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(UpsertAssignmentForm.Assignment), assignment);
+        var modalRef = Modal.Show<UpsertAssignmentForm>("Edit Assignment", parameters);
+        var modalResult = await modalRef.Result;
+        if (!modalResult.Cancelled)
+        {
+            assignments = await AssignmentService.GetAll();
+        }
+    }
+
+    private async Task DeleteAssignment(Assignment assignment)
+    {
+        var options = new ModalOptions()
+        {
+            Class = "blazored-modal delete-modal"
+        };
+        var modalRef = Modal.Show<DeleteModal>("Are you sure?", options);
+        var modalResult = await modalRef.Result;
+        if (!modalResult.Cancelled)
+        {
+            var result = await AssignmentService.Delete(assignment.Id);
+            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
+            if (responseObj.IsSuccessful)
+            {
+                assignments = await AssignmentService.GetAll();
+                ToastService.ShowSuccess(responseObj.Message);
+            }
+            else
+            {
+                ToastService.ShowError(responseObj.Message);
+            }
+        }
+    }
+
+    private async Task AddAssignment()
+    {
+        Assignment assignment = new Assignment();
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(UpsertAssignmentForm.Assignment), assignment);
+        var options = new ModalOptions()
+        {
+            Class = "blazored-modal upsert-assignment-modal"
+        };
+        var modalRef = Modal.Show<UpsertAssignmentForm>("Add Assignment", parameters, options);
+        var result = await modalRef.Result;
+        if (!result.Cancelled)
+        {
+            assignments = await AssignmentService.GetAll();
+            StateHasChanged();
+        }
     }
 }

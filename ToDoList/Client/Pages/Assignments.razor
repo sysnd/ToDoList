@@ -1,24 +1,9 @@
 ﻿@page "/tasks"
 
-@using ToDoList.Shared.Models
 @using ToDoList.Client.Components.Assignments
 
-@inject IModalService Modal
-
-<button class="btn btn-primary" @onclick="OpenModal">Add Assignment</button>
 <AssignmentsList />
 
 @code {
-    Assignment assignment = new Assignment();
 
-    private void OpenModal()
-    {
-        var parameters = new ModalParameters();
-        var options = new ModalOptions()
-        {
-            Position = ModalPosition.Center
-        };
-        parameters.Add(nameof(UpsertAssignmentForm.Assignment), assignment);
-        Modal.Show<UpsertAssignmentForm>("Add Assignment", parameters, options);
-    }
 }

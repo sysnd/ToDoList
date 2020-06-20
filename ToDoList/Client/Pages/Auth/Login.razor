@@ -1,9 +1,10 @@
 ﻿@page "/login"
+@layout EmptyLayout
 
 @using ToDoList.Client.Components.Auth
 @using ToDoList.Shared.Models.Requests
 
-<LoginForm User=user/>
+<LoginForm User=user />
 
 @code {
     UserLoginRequest user = new UserLoginRequest();

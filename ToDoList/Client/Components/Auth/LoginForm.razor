@@ -1,12 +1,10 @@
-﻿@using ToDoList.Shared.Utils
-@using ToDoList.Shared.Models.Responses
-@using ToDoList.Shared.Models.Requests
-@using ToDoList.Client.Services.Users
+﻿@using ToDoList.Shared.Models.Requests
+@using ToDoList.Client.Services.Auth
 
 @inject IModalService ModalService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
-@inject IUserService UserService
+@inject IAuthService AuthService
 
 <EditForm Model="@User" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -34,15 +32,14 @@
 
     private async Task OnValidSubmit()
     {
-        var result = await UserService.Login(User);
-        var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
-        if (responseObj.IsSuccessful)
+        var result = await AuthService.Login(User);
+        if (result.IsSuccessful)
         {
             NavigationManager.NavigateTo("/tasks");
         }
         else
         {
-            ToastService.ShowError(responseObj.Message);
+            ToastService.ShowError(result.Message);
         }
     }
 }

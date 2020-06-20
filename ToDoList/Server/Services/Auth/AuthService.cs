@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,15 +15,17 @@ namespace ToDoList.Server.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        public AuthService(IUserRepository userRepository)
+        private readonly IConfiguration _configuration;
+        public AuthService(IUserRepository userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
-        public async Task<GenericResponseMessage> SignIn(string username, string password)
+        public async Task<LoginResponseMessage> SignIn(string username, string password)
         {
             var user = await _userRepository.GetByUsername(username);
-            var response = new GenericResponseMessage();
+            var response = new LoginResponseMessage();
 
             if (user == null)
             {
@@ -36,14 +42,33 @@ namespace ToDoList.Server.Services.Auth
             {
                 response.Message = "Your password is incorrect.";
                 response.IsSuccessful = false;
-                return response;
             }
             else
             {
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecurityKey"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var expiry = DateTime.Now.AddDays(Convert.ToInt32(_configuration["Jwt:ExpiryInDays"]));
+
+                var token = new JwtSecurityToken(
+                    _configuration["Jwt:Issuer"],
+                    _configuration["Jwt:Issuer"],
+                    claims,
+                    expires: expiry,
+                    signingCredentials: creds
+                );
+
+                response.Token = new JwtSecurityTokenHandler().WriteToken(token);
                 response.Message = "Successfully signed in.";
                 response.IsSuccessful = true;
-                return response;
             }
+
+            return response;
         }
 
         public async Task<GenericResponseMessage> SignUp(User user)

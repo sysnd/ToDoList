@@ -2,11 +2,13 @@
 @using ToDoList.Shared.Utils
 @using ToDoList.Shared.Models.Responses
 @using ToDoList.Client.Services.Users
+@using ToDoList.Client.Services.Auth
 
 @inject IModalService ModalService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
 @inject IUserService UserService
+@inject IAuthService AuthService
 
 <EditForm Model="@User" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -65,7 +67,7 @@
     {
         if (User.Id == Guid.Empty)
         {
-            var result = await UserService.Register(User);
+            var result = await AuthService.Register(User);
             var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
             if (responseObj.IsSuccessful)
             {

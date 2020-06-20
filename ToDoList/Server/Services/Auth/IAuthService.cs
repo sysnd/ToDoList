@@ -6,7 +6,7 @@ namespace ToDoList.Server.Services.Auth
 {
     public interface IAuthService
     {
-        Task<GenericResponseMessage> SignIn(string username, string password);
+        Task<LoginResponseMessage> SignIn(string username, string password);
 
         Task<GenericResponseMessage> SignUp(User user);
     }

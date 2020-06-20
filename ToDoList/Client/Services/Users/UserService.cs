@@ -4,29 +4,18 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using ToDoList.Shared.Models;
-using ToDoList.Shared.Models.Requests;
 
 namespace ToDoList.Client.Services.Users
 {
     public class UserService : IUserService
     {
         private readonly HttpClient _httpClient;
+
         public UserService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<HttpResponseMessage> Login(UserLoginRequest user)
-        {
-            var result = await _httpClient.PostAsJsonAsync("auth/signin", user);
-            return result;
-        }
-
-        public async Task<HttpResponseMessage> Register(User user)
-        {
-            var result = await _httpClient.PostAsJsonAsync("auth/signup", user);
-            return result;
-        }
 
         public async Task<HttpResponseMessage> Update(User user)
         {

@@ -9,6 +9,7 @@ using ToDoList.Shared.Models;
 
 namespace ToDoList.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase

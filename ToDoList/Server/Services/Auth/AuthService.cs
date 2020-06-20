@@ -66,6 +66,7 @@ namespace ToDoList.Server.Services.Auth
                 response.Token = new JwtSecurityTokenHandler().WriteToken(token);
                 response.Message = "Successfully signed in.";
                 response.IsSuccessful = true;
+                response.User = user;
             }
 
             return response;

@@ -35,9 +35,13 @@ namespace ToDoList.Client.Infrastructure
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
         }
 
-        public void MarkUserAsAuthenticated(string email)
+        public void MarkUserAsAuthenticated(string username, string role)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+            var claims = new[] {
+                new Claim(ClaimTypes.Name, username) ,
+                new Claim(ClaimTypes.Role, role)
+            };
+            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "apiauth"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }

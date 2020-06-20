@@ -45,10 +45,13 @@ namespace ToDoList.Server.Services.Auth
             }
             else
             {
+                var name = user.FirstName + " " + user.LastName;
+                var role = user.IsAdmin ? "Admin" : "User";
+
                 var claims = new[]
                 {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+                    new Claim(ClaimTypes.Name, name),
+                    new Claim(ClaimTypes.Role, role)
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecurityKey"]));

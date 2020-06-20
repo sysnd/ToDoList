@@ -26,6 +26,6 @@ namespace ToDoList.Shared.Models
 
         public bool IsAdmin { get; set; }
 
-        public List<Assignment> Tasks { get; set; }
+        public List<Assignment> Assignments { get; set; }
     }
 }

@@ -34,8 +34,12 @@ namespace ToDoList.Client.Services.Auth
 
             if (responseObj.IsSuccessful)
             {
+                var name = responseObj.User.FirstName + " " + responseObj.User.LastName;
+                var role = responseObj.User.IsAdmin ? "Admin" : "User";
+
                 await _localStorage.SetItemAsync("authToken", responseObj.Token);
-                ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(responseObj.User.Username, responseObj.User.IsAdmin ? "Admin" : "User");
+
+                ((CustomAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(name, role);
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", responseObj.Token);
             }
 

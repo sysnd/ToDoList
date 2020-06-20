@@ -3,8 +3,16 @@
 
 @using ToDoList.Shared.Models
 @using ToDoList.Client.Components.Auth
+@using ToDoList.Client.Components.Common
 
-<RegisterForm User=user />
+<AuthorizeView>
+    <Authorized>
+        <Redirect To="/" />
+    </Authorized>
+    <NotAuthorized>
+        <RegisterForm User=user />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     User user = new User();

@@ -30,7 +30,7 @@ namespace ToDoList.Server.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Effort = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),

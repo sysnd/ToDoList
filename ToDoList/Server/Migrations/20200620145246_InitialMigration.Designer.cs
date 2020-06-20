@@ -9,7 +9,7 @@ using ToDoList.Server.Data;
 namespace ToDoList.Server.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    [Migration("20200616120527_InitialMigration")]
+    [Migration("20200620145246_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,7 @@ namespace ToDoList.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid?>("UserId")
@@ -86,7 +87,7 @@ namespace ToDoList.Server.Migrations
             modelBuilder.Entity("ToDoList.Shared.Models.Assignment", b =>
                 {
                     b.HasOne("ToDoList.Shared.Models.User", "User")
-                        .WithMany("Tasks")
+                        .WithMany("Assignments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

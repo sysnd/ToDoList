@@ -16,7 +16,7 @@ namespace ToDoList.Server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Tasks)
+                .HasMany(u => u.Assignments)
                 .WithOne(t => t.User)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -41,7 +41,8 @@
         var result = await AuthService.Login(User);
         if (result.IsSuccessful)
         {
-            NavigationManager.NavigateTo("/tasks");
+            
+            NavigationManager.NavigateTo("/assignments");
         }
         else
         {

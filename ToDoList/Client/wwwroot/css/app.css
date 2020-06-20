@@ -151,7 +151,7 @@ app {
     color: #dc3545;
 }
 
-.delete-modal div.blazored-modal-header{
+.delete-modal div.blazored-modal-header {
     padding: 0 0 1rem 0;
 }
 
@@ -168,8 +168,13 @@ app {
     display: none;
 }
 
-.nav-icon{
+.nav-icon {
     margin-right: 10px;
+}
+
+.hello-text {
+    margin: 16px;
+    float: right;
 }
 
 @media (max-width: 767.98px) {

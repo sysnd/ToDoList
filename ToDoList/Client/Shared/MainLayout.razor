@@ -4,16 +4,44 @@
     <NavMenu />
 </div>
 <div class="main">
-    <AuthorizeView>
-        <Authorized>
-            <div class="top-row px-4">
-                <a href="/logout" class="ml-md-auto">Logout</a>
-            </div>
-        </Authorized>
-    </AuthorizeView>
+    <div class="top-row px-4">
+        <AuthorizeView>
+            <Authorized>
+                <p class="@displayClass hello-text">Hello, @name!</p>
+                <a href="/logout">Logout</a>
+            </Authorized>
+            <NotAuthorized>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            </NotAuthorized>
+        </AuthorizeView>
+    </div>
     <div class="content px-4">
         @Body
     </div>
     <BlazoredModal />
     <BlazoredToasts />
 </div>
+
+@code{
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private string name;
+    private string displayClass;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            name = user.Identity.Name;
+        }
+        else
+        {
+            displayClass = "display-none";
+        }
+    }
+}

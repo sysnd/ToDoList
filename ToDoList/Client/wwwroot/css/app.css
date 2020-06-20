@@ -151,7 +151,11 @@ app {
     color: #dc3545;
 }
 
-.blazored-modal {
+.delete-modal div.blazored-modal-header{
+    padding: 0 0 1rem 0;
+}
+
+.upsert-user-modal {
     height: 600px;
     overflow-y: auto;
 }

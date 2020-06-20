@@ -1,7 +1,11 @@
 ﻿@using ToDoList.Shared.Models
+@using ToDoList.Client.Components.Common
+@using ToDoList.Shared.Utils
+@using ToDoList.Shared.Models.Responses
 
 @inject HttpClient Http
 @inject IModalService Modal
+@inject IToastService ToastService
 
 @if (users == null)
 {
@@ -33,7 +37,7 @@ else
                         <td>@u.LastName</td>
                         <td>@u.IsAdmin</td>
                         <td><button type="button" class="btn btn-primary" @onclick="@(() => EditUser(u))"><i class="fas fa-edit"></i></button></td>
-                        <td><button type="button" class="btn btn-primary"><i class="fas fa-trash"></i></button></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(()=> DeleteUser(u))"><i class="fas fa-trash"></i></button></td>
                     </tr>
                 }
             }
@@ -61,5 +65,29 @@ else
         var parameters = new ModalParameters();
         parameters.Add(nameof(UpsertUserForm.User), user);
         Modal.Show<UpsertUserForm>("Edit User", parameters);
+    }
+
+    private async Task DeleteUser(User user)
+    {
+        var options = new ModalOptions()
+        {
+            Class = "blazored-modal delete-modal"
+        };
+        var modalRef = Modal.Show<DeleteModal>("Are you sure?", options);
+        var modalResult = await modalRef.Result;
+        if (!modalResult.Cancelled)
+        {
+            var result = await Http.DeleteAsync($"user/{user.Id}");
+            var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
+            if (responseObj.IsSuccessful)
+            {
+                ToastService.ShowSuccess(responseObj.Message);
+                this.StateHasChanged();
+            }
+            else
+            {
+                ToastService.ShowError(responseObj.Message);
+            }
+        }
     }
 }

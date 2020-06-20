@@ -1,0 +1,15 @@
+﻿<div>
+    <div>
+        <p>This will remove this object permanently.</p>
+    </div>
+    <div>
+        <button type="button" @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
+        <button type="button" @onclick="BlazoredModal.Close" class="btn btn-primary">Continue</button>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; }
+
+}

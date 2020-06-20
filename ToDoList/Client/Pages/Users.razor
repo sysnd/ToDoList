@@ -11,12 +11,17 @@
 @code {
     User user = new User();
 
-    private void OpenModal()
+    private async Task OpenModal()
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(UpsertUserForm.User), user);
-        var modalRef = Modal.Show<UpsertUserForm>("Add User", parameters);
-        if (modalRef.Result.IsCompletedSuccessfully)
+        var options = new ModalOptions()
+        {
+            Class = "blazored-modal upsert-user-modal"
+        };
+        var modalRef = Modal.Show<UpsertUserForm>("Add User", parameters, options);
+        var result = await modalRef.Result;
+        if (!result.Cancelled)
         {
             this.StateHasChanged();
         }

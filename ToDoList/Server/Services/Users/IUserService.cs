@@ -16,6 +16,6 @@ namespace ToDoList.Server.Services.Users
 
         Task<GenericResponseMessage> Update(User user);
 
-        Task<bool> Delete(Guid id);
+        Task<GenericResponseMessage> Delete(Guid id);
     }
 }

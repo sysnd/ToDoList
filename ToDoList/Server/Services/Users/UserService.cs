@@ -1,7 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ToDoList.Server.Repositories.Users;
 using ToDoList.Shared.Models;
@@ -32,18 +30,23 @@ namespace ToDoList.Server.Services.Users
             return true;
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<GenericResponseMessage> Delete(Guid id)
         {
+            var response = new GenericResponseMessage();
+
             try
             {
                 await _userRepository.Delete(id);
+                response.IsSuccessful = true;
+                response.Message = "Successfully deleted the user.";
             }
             catch (Exception)
             {
-                return false;
+                response.IsSuccessful = false;
+                response.Message = $"Could not delete user.";
             }
 
-            return true;
+            return response;
         }
 
         public IQueryable<User> GetAll()

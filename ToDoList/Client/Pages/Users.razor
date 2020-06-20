@@ -1,29 +1,9 @@
 ﻿@page "/users"
 
 @using ToDoList.Client.Components.Users
-@using ToDoList.Shared.Models
 
-@inject IModalService Modal
-
-<button class="btn btn-primary" @onclick="OpenModal">Add User</button>
 <UsersList />
 
 @code {
-    User user = new User();
 
-    private async Task OpenModal()
-    {
-        var parameters = new ModalParameters();
-        parameters.Add(nameof(UpsertUserForm.User), user);
-        var options = new ModalOptions()
-        {
-            Class = "blazored-modal upsert-user-modal"
-        };
-        var modalRef = Modal.Show<UpsertUserForm>("Add User", parameters, options);
-        var result = await modalRef.Result;
-        if (!result.Cancelled)
-        {
-            this.StateHasChanged();
-        }
-    }
 }

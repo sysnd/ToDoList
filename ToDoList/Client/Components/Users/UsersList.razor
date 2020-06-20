@@ -2,10 +2,11 @@
 @using ToDoList.Client.Components.Common
 @using ToDoList.Shared.Utils
 @using ToDoList.Shared.Models.Responses
+@using ToDoList.Client.Services.Users
 
-@inject HttpClient Http
 @inject IModalService Modal
 @inject IToastService ToastService
+@inject IUserService UserService
 
 @if (users == null)
 {
@@ -13,6 +14,7 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="AddUser">Add User</button>
     <table class="table">
         <thead>
             <tr>
@@ -57,14 +59,19 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        users = await Http.GetFromJsonAsync<List<User>>("user");
+        users = await UserService.GetAll();
     }
 
-    private void EditUser(User user)
+    private async Task EditUser(User user)
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(UpsertUserForm.User), user);
-        Modal.Show<UpsertUserForm>("Edit User", parameters);
+        var modalRef = Modal.Show<UpsertUserForm>("Edit User", parameters);
+        var modalResult = await modalRef.Result;
+        if (!modalResult.Cancelled)
+        {
+            users = await UserService.GetAll();
+        }
     }
 
     private async Task DeleteUser(User user)
@@ -77,17 +84,35 @@ else
         var modalResult = await modalRef.Result;
         if (!modalResult.Cancelled)
         {
-            var result = await Http.DeleteAsync($"user/{user.Id}");
+            var result = await UserService.Delete(user.Id);
             var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
             if (responseObj.IsSuccessful)
             {
+                users = await UserService.GetAll();
                 ToastService.ShowSuccess(responseObj.Message);
-                this.StateHasChanged();
             }
             else
             {
                 ToastService.ShowError(responseObj.Message);
             }
+        }
+    }
+
+    private async Task AddUser()
+    {
+        User user = new User();
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(UpsertUserForm.User), user);
+        var options = new ModalOptions()
+        {
+            Class = "blazored-modal upsert-user-modal"
+        };
+        var modalRef = Modal.Show<UpsertUserForm>("Add User", parameters, options);
+        var result = await modalRef.Result;
+        if (!result.Cancelled)
+        {
+            users = await UserService.GetAll();
+            StateHasChanged();
         }
     }
 }

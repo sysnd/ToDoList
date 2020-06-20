@@ -1,11 +1,12 @@
 ﻿@using ToDoList.Shared.Utils
 @using ToDoList.Shared.Models.Responses
 @using ToDoList.Shared.Models.Requests
+@using ToDoList.Client.Services.Users
 
 @inject IModalService ModalService
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager
-@inject HttpClient Http
+@inject IUserService UserService
 
 <EditForm Model="@User" OnValidSubmit="@OnValidSubmit">
     <DataAnnotationsValidator />
@@ -33,7 +34,7 @@
 
     private async Task OnValidSubmit()
     {
-        var result = await Http.PostAsJsonAsync<UserLoginRequest>("auth/signin", User);
+        var result = await UserService.Login(User);
         var responseObj = await JsonUtils.GetObjectFromHttpResponse<GenericResponseMessage>(result);
         if (responseObj.IsSuccessful)
         {

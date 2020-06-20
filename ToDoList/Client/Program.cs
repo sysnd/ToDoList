@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ToDoList.Client.Services.Assignments;
+using ToDoList.Client.Services.Users;
 
 namespace ToDoList.Client
 {
@@ -16,6 +18,9 @@ namespace ToDoList.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            builder.Services.AddSingleton<IUserService, UserService>();
+            builder.Services.AddSingleton<IAssignmentService, AssignmentService>();
 
             builder.Services.AddBlazoredModal(); 
             builder.Services.AddBlazoredToast();

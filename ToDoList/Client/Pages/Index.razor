@@ -1,12 +1,20 @@
 ﻿@page "/"
-
-    <div class="text-align-center">
-        <h1>Welcome to To-Do List</h1>
-        <p>To discover more content, please sign in.</p>
-        <p>
-            <a href="/login" class="btn btn-blue">Login</a>
-            <a href="/register" class="btn btn-purple">Register</a>
-        </p>
-    </div>
+<div class="text-align-center">
+    <h1>Welcome to To-Do List</h1>
+    <AuthorizeView>
+        <NotAuthorized>
+            <p>To discover more content, please sign in.</p>
+            <p>
+                <a href="/login" class="btn btn-blue">Login</a>
+                <a href="/register" class="btn btn-purple">Register</a>
+            </p>
+        </NotAuthorized>
+        <Authorized>
+            <p>
+                If you have any ideas how to improve this project, please reach out to <a href="mailto:nia.dryankova@gmail.com">nia.dryankova@gmail.com</a>
+            </p>
+        </Authorized>
+    </AuthorizeView>
+</div>
 
 

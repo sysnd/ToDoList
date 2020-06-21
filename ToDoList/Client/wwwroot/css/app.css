@@ -185,6 +185,26 @@ app {
     color: #fff;
 }
 
+.btn-purple {
+    background-color: #3a0647;
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: #3a0647;
+    color: white;
+}
+
+.btn-blue {
+    background-color: #052767;
+    color: white;
+}
+
+.btn-blue:hover {
+    background-color: #052767;
+    color: white;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

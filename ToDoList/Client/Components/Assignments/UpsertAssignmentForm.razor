@@ -3,6 +3,7 @@
 @using ToDoList.Shared.Utils
 @using ToDoList.Shared.Models.Responses
 @using ToDoList.Shared.Enums
+@using System.Security.Claims 
 
 @inject IToastService ToastService
 @inject IModalService ModalService
@@ -48,8 +49,21 @@
     [CascadingParameter]
     BlazoredModalInstance BlazoredModal { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private ClaimsPrincipal currentUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        currentUser = authState.User;
+    }
+
     private async Task OnValidSubmit()
     {
+        Assignment.UserId = Guid.Parse(currentUser.Claims.First(c => c.Type == "Id").Value);
+
         if (Assignment.Id == Guid.Empty)
         {
             var result = await AssignmentService.Create(Assignment);

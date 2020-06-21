@@ -34,7 +34,7 @@ namespace ToDoList.Server.Migrations
                     Description = table.Column<string>(nullable: true),
                     Effort = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -35,7 +35,7 @@ namespace ToDoList.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -87,7 +87,8 @@ namespace ToDoList.Server.Migrations
                     b.HasOne("ToDoList.Shared.Models.User", "User")
                         .WithMany("Assignments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

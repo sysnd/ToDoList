@@ -9,7 +9,7 @@ using ToDoList.Server.Data;
 namespace ToDoList.Server.Migrations
 {
     [DbContext(typeof(ToDoListDbContext))]
-    [Migration("20200620145246_InitialMigration")]
+    [Migration("20200621060833_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace ToDoList.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -89,7 +89,8 @@ namespace ToDoList.Server.Migrations
                     b.HasOne("ToDoList.Shared.Models.User", "User")
                         .WithMany("Assignments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using ToDoList.Shared.Enums;
 
 namespace ToDoList.Shared.Models
@@ -14,6 +15,8 @@ namespace ToDoList.Shared.Models
         public int Effort { get; set; }
 
         public AssignmentStatus Status { get; set; }
+
+        public Guid UserId { get; set; }
 
         public User User { get; set; }
     }

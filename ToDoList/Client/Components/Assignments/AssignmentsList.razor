@@ -4,6 +4,7 @@
 @using ToDoList.Shared.Models.Responses
 @using ToDoList.Shared.Enums
 @using ToDoList.Client.Services.Assignments
+@using System.Security.Claims
 
 @inject IModalService Modal
 @inject IToastService ToastService
@@ -38,8 +39,8 @@ else
                         <td>@a.Description</td>
                         <td>@a.Effort</td>
                         <td>@Enum.GetName(typeof(AssignmentStatus), a.Status)</td>
-                        <td><button type="button" class="btn btn-primary" @onclick="@(() => EditAssignment(a))"><i class="fas fa-edit"></i></button></td>
-                        <td><button type="button" class="btn btn-primary" @onclick="@(() => DeleteAssignment(a))"><i class="fas fa-trash"></i></button></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => EditAssignment(a))" disabled="@DisableEditAndDelete(a)"><i class="fas fa-edit"></i></button></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => DeleteAssignment(a))" disabled="@DisableEditAndDelete(a)"><i class="fas fa-trash"></i></button></td>
                     </tr>
                 }
             }
@@ -57,9 +58,31 @@ else
 
     private List<Assignment> assignments;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private ClaimsPrincipal currentUser;
+
+    private bool DisableEditAndDelete(Assignment assignment)
+    {
+        if (currentUser.IsInRole("Admin"))
+        {
+            return false;
+        }
+        else if (currentUser.Claims.First(c => c.Type == "Id").Value == assignment.UserId.ToString())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         assignments = await AssignmentService.GetAll();
+        var authState = await AuthenticationStateTask;
+        currentUser = authState.User;
     }
 
     private async Task EditAssignment(Assignment assignment)

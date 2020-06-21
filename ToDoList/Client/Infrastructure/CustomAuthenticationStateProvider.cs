@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ToDoList.Shared.Models;
 
 namespace ToDoList.Client.Infrastructure
 {
@@ -35,11 +36,17 @@ namespace ToDoList.Client.Infrastructure
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
         }
 
-        public void MarkUserAsAuthenticated(string username, string role)
+        public void MarkUserAsAuthenticated(User user)
         {
+            var role = user.IsAdmin ? "Admin" : "User";
+
             var claims = new[] {
-                new Claim(ClaimTypes.Name, username) ,
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.Name, user.Username) ,
+                new Claim(ClaimTypes.Role, role),
+                new Claim(ClaimTypes.GivenName, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("Id", user.Id.ToString())
             };
             var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(claims, "apiauth"));
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));

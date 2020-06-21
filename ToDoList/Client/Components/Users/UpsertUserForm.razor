@@ -10,38 +10,43 @@
 @inject IUserService UserService
 @inject IAuthService AuthService
 
-<EditForm Model="@User" OnValidSubmit="@OnValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group">
-        <label for="usernameInput">Username</label>
-        <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" disabled=@isDisabled />
-        <ValidationMessage For="@(() => User.Username)" />
-    </div>
-    <div class="form-group">
-        <label for="emailInput">Email</label>
-        <InputText type="email" class="form-control" id="emailInput" @bind-Value="@User.Email" />
-        <ValidationMessage For="@(() => User.Email)" />
-    </div>
-    <div class="form-group @passwordClass">
-        <label for="passwordInput">Password</label>
-        <InputText type="password" class="form-control" id="passwordInput" @bind-Value="@User.Password" />
-        <ValidationMessage For="@(() => User.Password)" />
-    </div>
-    <div class="form-group">
-        <label for="firstNameInput">First Name</label>
-        <InputText type="text" class="form-control" id="firstNameInput" @bind-Value="User.FirstName" />
-        <ValidationMessage For="@(() => User.FirstName)" />
-    </div>
-    <div class="form-group">
-        <label for="lastNameInput">Last Name</label>
-        <InputText type="text" class="form-control" id="lastNameInput" @bind-Value="@User.LastName" />
-        <ValidationMessage For="@(() => User.LastName)" />
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-    <button @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
+    <EditForm Model="@User" OnValidSubmit="@OnValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="usernameInput">Username</label>
+            <InputText type="text" class="form-control" id="usernameInput" @bind-Value="@User.Username" disabled=@isDisabled />
+            <ValidationMessage For="@(() => User.Username)" />
+        </div>
+        <div class="form-group">
+            <label for="emailInput">Email</label>
+            <InputText type="email" class="form-control" id="emailInput" @bind-Value="@User.Email" />
+            <ValidationMessage For="@(() => User.Email)" />
+        </div>
+        <div class="form-group @passwordClass">
+            <label for="passwordInput">Password</label>
+            <InputText type="password" class="form-control" id="passwordInput" @bind-Value="@User.Password" />
+            <ValidationMessage For="@(() => User.Password)" />
+        </div>
+        <div class="form-group">
+            <label for="firstNameInput">First Name</label>
+            <InputText type="text" class="form-control" id="firstNameInput" @bind-Value="User.FirstName" />
+            <ValidationMessage For="@(() => User.FirstName)" />
+        </div>
+        <div class="form-group">
+            <label for="lastNameInput">Last Name</label>
+            <InputText type="text" class="form-control" id="lastNameInput" @bind-Value="@User.LastName" />
+            <ValidationMessage For="@(() => User.LastName)" />
+        </div>
+        <div class="form-group">
+            <label for="isAdminCheckbox">Is Admin</label>
+            <InputCheckbox class="form-control" id="isAdminCheckbox" @bind-Value="@User.IsAdmin" />
+            <ValidationMessage For="@(() => User.IsAdmin)" />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button @onclick="BlazoredModal.Cancel" class="btn btn-secondary">Cancel</button>
 
-</EditForm>
+    </EditForm>
 
 @code {
     [Parameter]

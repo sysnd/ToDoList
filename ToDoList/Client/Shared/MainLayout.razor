@@ -4,7 +4,9 @@
     <NavMenu />
 </div>
 <div class="main">
-    <div class="top-row px-4">
+    <BlazoredModal />
+    <BlazoredToasts />
+    <div class="top-row px-4" id="navigation-bar">
         <AuthorizeView>
             <Authorized>
                 <p class="@displayClass hello-text">Hello, @name!</p>
@@ -19,8 +21,6 @@
     <div class="content px-4">
         @Body
     </div>
-    <BlazoredModal />
-    <BlazoredToasts />
 </div>
 
 @code{

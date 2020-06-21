@@ -94,6 +94,7 @@ else
         if (!modalResult.Cancelled)
         {
             assignments = await AssignmentService.GetAll();
+            ToastService.ShowSuccess("Successfully edited assignment.");
         }
     }
 
@@ -135,7 +136,7 @@ else
         if (!result.Cancelled)
         {
             assignments = await AssignmentService.GetAll();
-            StateHasChanged();
+            ToastService.ShowSuccess("Successfully added assignment.");
         }
     }
 }

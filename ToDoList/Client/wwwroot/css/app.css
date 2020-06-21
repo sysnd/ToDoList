@@ -177,6 +177,14 @@ app {
     float: right;
 }
 
+#navigation-bar {
+    background-color: #0b193c;
+}
+
+#navigation-bar > a {
+    color: #fff;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;

@@ -103,6 +103,7 @@ else
         if (!modalResult.Cancelled)
         {
             users = await UserService.GetAll();
+            ToastService.ShowSuccess("Successfully edited user.");
         }
     }
 
@@ -144,7 +145,7 @@ else
         if (!result.Cancelled)
         {
             users = await UserService.GetAll();
-            StateHasChanged();
+            ToastService.ShowSuccess("Successfully added user.");
         }
     }
 }
